@@ -9,13 +9,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject _spawnPoint;
     [SerializeField] public GameObject _targetPoint;
 
-
+    [SerializeField] private List<GameObject> characters;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(_characterPrefab,_spawnPoint.transform.position,Quaternion.identity);
+            foreach (var character in characters)
+            {
+                if (!character.activeInHierarchy)
+                {
+                    character.transform.position = _spawnPoint.transform.position;
+                    character.SetActive(true);
+                    break; // ilk pasif objeyi bulunduðunda bitir.
+                }
+
+            }
         }
     }
 }
