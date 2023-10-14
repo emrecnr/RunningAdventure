@@ -17,4 +17,14 @@ public class AICharacter : MonoBehaviour
     {
         _navMeshAgent.SetDestination(_target.transform.position);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacles"))
+        {
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>()._currentCharacterCount--;
+            gameObject.SetActive(false);
+            
+        }
+    }
 }

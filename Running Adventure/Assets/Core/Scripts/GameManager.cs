@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _target;
-    [SerializeField] private GameObject _characterPrefab;
+    
     [SerializeField] public GameObject _spawnPoint;
     [SerializeField] public GameObject _targetPoint;
+    
+     public  int _currentCharacterCount;
 
     [SerializeField] private List<GameObject> characters;
 
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
                 {
                     character.transform.position = _spawnPoint.transform.position;
                     character.SetActive(true);
+                    _currentCharacterCount++;
                     break; // ilk pasif objeyi bulunduðunda bitir.
                 }
 
