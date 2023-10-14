@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private GameManager _gameManager;
-    private float _moveSpeed = .5f;
+    private float _moveSpeed = 1f;
     private void FixedUpdate()
     {
         transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
@@ -15,9 +15,9 @@ public class Character : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            if (Input.GetAxis("Mouse X")<0)
+            if (Input.GetAxis("Mouse X") < 0)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x - .1f, transform.position.y, transform.position.z),.3f);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x - .1f, transform.position.y, transform.position.z), .3f);
             }
             if (Input.GetAxis("Mouse X") > 0)
             {
@@ -28,9 +28,10 @@ public class Character : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "x2" ||other.name == "+3" || other.name == "-4" || other.name == "/2"  )
+        if (other.CompareTag("Multiplication") || other.CompareTag("Addition") || other.CompareTag("Substraction") || other.CompareTag("Division"))
         {
-            _gameManager.AICharacterControl(other.name,other.transform);
+            int num = int.Parse(other.name);
+            _gameManager.AICharacterControl(other.tag, num, other.transform);
             Debug.Log("carpti");
         }
     }

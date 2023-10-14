@@ -22,9 +22,9 @@ public class AICharacter : MonoBehaviour
     {
         if (other.CompareTag("Obstacles"))
         {
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>()._currentCharacterCount--;
+            GameManager._currentCharacterCount--;
             gameObject.SetActive(false);
-            
+
         }
     }
 }

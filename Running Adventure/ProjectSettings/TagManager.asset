@@ -7,6 +7,10 @@ TagManager:
   - GameManager
   - NeedleBox
   - Obstacles
+  - Addition
+  - Substraction
+  - Division
+  - Multiplication
   layers:
   - Default
   - TransparentFX

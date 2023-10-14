@@ -1,3 +1,4 @@
+using Math;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public GameObject _targetPoint;
 
-    public int _currentCharacterCount;
+    public static int _currentCharacterCount;
 
     [SerializeField] private List<GameObject> characters;
 
@@ -17,156 +18,30 @@ public class GameManager : MonoBehaviour
     {
 
     }
-    public void AICharacterControl(string value, Transform _position)
+    public void AICharacterControl(string type, int value, Transform _position)
     {
-        switch (value)
+        switch (type)
         {
-            case "x2":
-                int num = 0;
-
-                foreach (var character in characters)
-                {
-
-                    if (num < _currentCharacterCount)
-                    {
-                        if (!character.activeInHierarchy)
-                        {
-                            character.transform.position = _position.position;
-                            character.SetActive(true);
-                            num++;
-
-                        }
-                    }
-                    else
-                    {
-                        num = 0;
-                        break; // ilk pasif objeyi bulunduðunda bitir.
-                    }
-
-
-                }
-                _currentCharacterCount *= 2;
+            case "Multiplication":
+                LibraryM.Multiplication(value, characters, _position);
                 break;
 
 
-            case "+3":
-                int num2 = 0;
-                foreach (var character in characters)
-                {
-
-                    if (num2 < 3)
-                    {
-                        if (!character.activeInHierarchy)
-                        {
-                            character.transform.position = _position.position;
-                            character.SetActive(true);
-                            num2++;
-
-                        }
-                    }
-                    else
-                    {
-                        num2 = 0;
-                        break; // ilk pasif objeyi bulunduðunda bitir.
-                    }
-
-
-                }
-                _currentCharacterCount += 3;
+            case "Addition":
+                LibraryM.Addition(value, characters, _position);
                 break;
 
-            case "-4":
+            case "Substraction":
 
-                if (_currentCharacterCount < 4)
-                {
-                    foreach (var character in characters)
-                    {
-                        character.transform.position = Vector3.zero;
-                        character.SetActive(false);
-                    }
-                    _currentCharacterCount = 1;
-                }
-                else
-                {
-                    int num3 = 0;
-                    foreach (var character in characters)
-                    {
-
-                        if (num3 != 4)
-                        {
-                            if (character.activeInHierarchy)
-                            {
-                                character.transform.position = Vector3.zero;
-                                character.SetActive(false);
-                                num3++;
-
-                            }
-                        }
-                        else
-                        {
-                            num3 = 0;
-                            break; // ilk pasif objeyi bulunduðunda bitir.
-                        }
-
-
-                    }
-                    _currentCharacterCount -= 4;
-                }
+                LibraryM.Substraction(value, characters);
 
                 break;
 
-            case "/2":
+            case "Division":
 
-                if (_currentCharacterCount <=2)
-                {
-                    foreach (var character in characters)
-                    {
-                        character.transform.position = Vector3.zero;
-                        character.SetActive(false);
-                    }
-                    _currentCharacterCount = 1;
-                }
-                else
-                {
-                    int bolen = _currentCharacterCount / 2;
-                    int num3 = 0;
-                    foreach (var character in characters)
-                    {
-
-                        if (num3 != bolen)
-                        {
-                            if (character.activeInHierarchy)
-                            {
-                                character.transform.position = Vector3.zero;
-                                character.SetActive(false);
-                                num3++;
-
-                            }
-                        }
-                        else
-                        {
-                            num3 = 0;
-                            break; // ilk pasif objeyi bulunduðunda bitir.
-                        }
-
-
-                    }
-                    if (_currentCharacterCount % 2 == 0)
-                    {
-                        _currentCharacterCount /= 2;
-                    }
-                    
-                    else
-                    {
-                        _currentCharacterCount /= 2;
-                        _currentCharacterCount++;
-                    }
-                   
-                }
+                LibraryM.Division(value, characters);
 
                 break;
-
-
         }
     }
 }
