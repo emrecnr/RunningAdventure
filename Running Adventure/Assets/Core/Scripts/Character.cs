@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField] private GameManager _gameManager;
     private float _moveSpeed = .5f;
     private void FixedUpdate()
     {
@@ -25,6 +26,14 @@ public class Character : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "x2" ||other.name == "+3" || other.name == "-4" || other.name == "/2"  )
+        {
+            _gameManager.AICharacterControl(other.name,other.transform);
+            Debug.Log("carpti");
+        }
+    }
 
 
 }
