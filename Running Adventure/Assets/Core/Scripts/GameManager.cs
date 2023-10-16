@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 {
 
 
-    [SerializeField] public GameObject _targetPoint;
 
     public static int _currentCharacterCount;
 

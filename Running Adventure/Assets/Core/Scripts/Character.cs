@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private GameManager _gameManager;
-    [SerializeField] private Camera _camera;
+    [SerializeField] private CameraController _camera;
     [SerializeField] private GameObject _battlePoint;
     private float _moveSpeed = 1f;
 
@@ -53,7 +53,7 @@ public class Character : MonoBehaviour
         }
         else if (other.CompareTag("FinishTrigger"))
         {
-            _camera.GetComponent<CameraController>().isFinish = true;
+            _camera.isFinish = true;
             _gameManager.TriggerEnemy();
             isFinish= true;
             Debug.Log("!!! Finish !!!");

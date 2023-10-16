@@ -5,17 +5,15 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-
+    [SerializeField] GameManager _gameManager;
     [SerializeField] private GameObject _attackTarget;
-    NavMeshAgent _enemyNavMesh;
+    [SerializeField] NavMeshAgent _enemyNavMesh;
+    [SerializeField] Animator _animator;
     bool _canAttack;
 
-    private void Start()
-    {
-        _enemyNavMesh = GetComponent<NavMeshAgent>();   
-    }
+  
 
-    private void Update()
+    private void LateUpdate()
     {
         if (_canAttack)
         {
@@ -24,7 +22,7 @@ public class EnemyController : MonoBehaviour
     }
     public void TriggerAnimation()
     {
-        GetComponent<Animator>().SetBool("attack",true);
+        _animator.SetBool("attack",true);
         _canAttack = true;
     }
 
@@ -33,7 +31,7 @@ public class EnemyController : MonoBehaviour
         if (other.CompareTag("AICharacter"))
         {
             Vector3 offset = new Vector3(transform.position.x, 0.25f, transform.position.z);
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset,false,true);
+            _gameManager.DestroyEffectCreate(offset,false,true);
 
             transform.position = Vector3.zero;
             gameObject.SetActive(false);

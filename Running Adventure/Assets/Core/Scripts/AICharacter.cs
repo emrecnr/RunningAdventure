@@ -5,45 +5,50 @@ using UnityEngine.AI;
 
 public class AICharacter : MonoBehaviour
 {
-    private GameObject _target;
+    [SerializeField] private GameManager _gameManager;
+
+    [SerializeField] public GameObject _targetPoint;
+
     NavMeshAgent _navMeshAgent;
+
 
     private void Start()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        _target = GameObject.FindWithTag("GameManager").GetComponent<GameManager>()._targetPoint;
+  
+
     }
     private void LateUpdate()
     {
-        _navMeshAgent.SetDestination(_target.transform.position);
+        _navMeshAgent.SetDestination(_targetPoint.transform.position);
     }
 
+   
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacles")||other.CompareTag("Saw")||other.CompareTag("fan"))
+        if (other.CompareTag("Obstacles") || other.CompareTag("Saw") || other.CompareTag("fan"))
         {
-            Vector3 offset = new Vector3(transform.position.x,0.25f,transform.position.z);
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset);
+            _gameManager.DestroyEffectCreate(GetVector());
             transform.position = Vector3.zero;
             gameObject.SetActive(false);
 
         }
-        if(other.CompareTag("Hammer"))
+        else if (other.CompareTag("Hammer"))
         {
-            Vector3 offset = new Vector3(transform.position.x, 0.25f, transform.position.z);
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset,true);
-           
+            _gameManager.DestroyEffectCreate(GetVector(), true);
             transform.position = Vector3.zero;
             gameObject.SetActive(false);
         }
 
-        if (other.CompareTag("Enemy"))
+        else if(other.CompareTag("Enemy"))
         {
-            Vector3 offset = new Vector3(transform.position.x, 0.25f, transform.position.z);
-            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset,false,false);
-
+            _gameManager.DestroyEffectCreate(GetVector(), false, false);
             transform.position = Vector3.zero;
             gameObject.SetActive(false);
         }
+    }
+    private Vector3 GetVector()
+    {
+        return new Vector3(transform.position.x, 0.25f, transform.position.z);
     }
 }
