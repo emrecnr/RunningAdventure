@@ -15,7 +15,7 @@ public class AICharacter : MonoBehaviour
     private void Start()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
-  
+
 
     }
     private void LateUpdate()
@@ -23,7 +23,7 @@ public class AICharacter : MonoBehaviour
         _navMeshAgent.SetDestination(_targetPoint.transform.position);
     }
 
-   
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacles") || other.CompareTag("Saw") || other.CompareTag("fan"))
@@ -40,11 +40,15 @@ public class AICharacter : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        else if(other.CompareTag("Enemy"))
+        else if (other.CompareTag("Enemy"))
         {
             _gameManager.DestroyEffectCreate(GetVector(), false, false);
             transform.position = Vector3.zero;
             gameObject.SetActive(false);
+        }
+        else if (other.CompareTag("OtherCharacter"))
+        {
+            _gameManager.characters.Add(other.gameObject);
         }
     }
     private Vector3 GetVector()

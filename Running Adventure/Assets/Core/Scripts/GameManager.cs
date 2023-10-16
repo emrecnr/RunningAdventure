@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     public static int _currentCharacterCount;
 
-    [SerializeField] private List<GameObject> characters;
+    [SerializeField] public List<GameObject> characters;
     [SerializeField] private List<GameObject> spawnEffects;
     [SerializeField] private List<GameObject> destroyEffects;
     [SerializeField] private List<GameObject> stainEffects;

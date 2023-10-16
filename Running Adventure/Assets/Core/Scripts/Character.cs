@@ -58,6 +58,13 @@ public class Character : MonoBehaviour
             isFinish= true;
             Debug.Log("!!! Finish !!!");
         }
+        else if (other.CompareTag("OtherCharacter"))
+        {
+            _gameManager.characters.Add(other.gameObject);
+            GameManager._currentCharacterCount++;
+            other.gameObject.tag = "AICharacter";
+                
+        }
     }
     
     //Direk takilmalirini engellemek icin

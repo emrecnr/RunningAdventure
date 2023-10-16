@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("AICharacter"))
+        if (other.CompareTag("AICharacter")||other.CompareTag("OtherCharacter"))
         {
             Vector3 offset = new Vector3(transform.position.x, 0.25f, transform.position.z);
             _gameManager.DestroyEffectCreate(offset,false,true);

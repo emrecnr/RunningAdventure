@@ -19,6 +19,7 @@ TagManager:
   - Enemy
   - FinishTrigger
   - Stick
+  - OtherCharacter
   layers:
   - Default
   - TransparentFX
