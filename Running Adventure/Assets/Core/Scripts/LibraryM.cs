@@ -28,6 +28,7 @@ namespace Math
                                 spawn.SetActive(true);
                                 spawn.transform.position = _position.position;
                                 spawn.GetComponent<ParticleSystem>().Play();
+                                spawn.GetComponent<AudioSource>().Play();
                                 break;
                             }
                         }
@@ -66,6 +67,7 @@ namespace Math
                                 spawn.SetActive(true);
                                 spawn.transform.position = _position.position;
                                 spawn.GetComponent<ParticleSystem>().Play();
+                                spawn.GetComponent<AudioSource>().Play();
                                 break;
                             }
                         }
@@ -100,6 +102,7 @@ namespace Math
                             destroy.SetActive(true);
                             destroy.transform.position = offset;
                             destroy.GetComponent<ParticleSystem>().Play();
+                            destroy.GetComponent<AudioSource>().Play();
                             break;
                         }
                     }   
@@ -127,6 +130,7 @@ namespace Math
                                     destroy.SetActive(true);
                                     destroy.transform.position = offset;
                                     destroy.GetComponent<ParticleSystem>().Play();
+                                    destroy.GetComponent<AudioSource>().Play();
                                     break;
                                 }
                             }
@@ -162,6 +166,7 @@ namespace Math
                             destroy.SetActive(true);
                             destroy.transform.position = offset;
                             destroy.GetComponent<ParticleSystem>().Play();
+                            destroy.GetComponent<AudioSource>().Play();
                             break;
                         }
                     }
@@ -189,6 +194,7 @@ namespace Math
                                     destroy.SetActive(true);
                                     destroy.transform.position = offset;
                                     destroy.GetComponent<ParticleSystem>().Play();
+                                    destroy.GetComponent<AudioSource>().Play();
                                     break;
                                 }
                             }

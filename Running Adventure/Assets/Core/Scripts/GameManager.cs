@@ -1,4 +1,5 @@
 using Math;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -126,6 +127,7 @@ public class GameManager : MonoBehaviour
                 effect.SetActive(true);
                 effect.transform.position = _position;
                 effect.GetComponent<ParticleSystem>().Play();
+                effect.GetComponent<AudioSource>().Play();
                 if (!state)
                 {
                     _currentCharacterCount--;

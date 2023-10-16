@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
@@ -9,7 +10,16 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject _battlePoint;
     private float _moveSpeed = 1f;
 
+    [SerializeField] private Slider _slider;
+    [SerializeField] private GameObject _point;
+
     public bool isFinish;
+
+    private void Start()
+    {
+        float distance = Vector3.Distance(transform.position, _point.transform.position);
+        _slider.maxValue = distance;
+    }
 
     private void FixedUpdate()
     {
@@ -22,12 +32,23 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
+
+
         if (isFinish)
         {
             transform.position = Vector3.Lerp(transform.position, _battlePoint.transform.position, 0.015f);
+            if (_slider.value != 0 )
+            {
+                _slider.value -= 0.1f;
+            }
+
         }
         else
         {
+            //Slider
+            float distance = Vector3.Distance(transform.position, _point.transform.position);
+            _slider.value = distance;
+            //
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 if (Input.GetAxis("Mouse X") < 0)
