@@ -59,6 +59,22 @@ public class Character : MonoBehaviour
             Debug.Log("!!! Finish !!!");
         }
     }
-
+    
+    //Direk takilmalirini engellemek icin
+    private void OnCollisionEnter(Collision collision)
+    {       
+        if (collision.gameObject.CompareTag("Stick")|| collision.gameObject.CompareTag("Obstacles")|| collision.gameObject.CompareTag("fan"))
+        {
+            if (transform.position.x > 0)
+            {
+                transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z);
+            }
+            
+        }
+    }
 
 }

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int howManyEnemy;
     [SerializeField] private GameObject _mainCharacter;
     public bool isGameOver = false;
+    public bool isFinish;
     private void Start()
     {
         CreateEnemy();
@@ -46,41 +47,48 @@ public class GameManager : MonoBehaviour
             {
                 enemy.GetComponent<EnemyController>().TriggerAnimation();
             }
+
         }
+        isFinish = true;
+        BattleState();
     }
     private void BattleState()
     {
-        if (_currentCharacterCount == 1 || howManyEnemy == 0)
+        if (isFinish)
         {
-            isGameOver = true;
-            foreach (var enemy in enemies)
+            if (_currentCharacterCount == 1 || howManyEnemy == 0)
             {
-                if (enemy.activeInHierarchy)
+                isGameOver = true;
+                foreach (var enemy in enemies)
                 {
-                    enemy.GetComponent<Animator>().SetBool("attack", false);
+                    if (enemy.activeInHierarchy)
+                    {
+                        enemy.GetComponent<Animator>().SetBool("attack", false);
+
+                    }
 
                 }
-               
-            }
-            foreach (var character in characters)
-            {
-                if (character.activeInHierarchy)
+                foreach (var character in characters)
                 {
-                    character.GetComponent<Animator>().SetBool("attack", false);
+                    if (character.activeInHierarchy)
+                    {
+                        character.GetComponent<Animator>().SetBool("attack", false);
+
+                    }
 
                 }
-                
-            }
-            _mainCharacter.GetComponent<Animator>().SetBool("attack", false);
-            if (_currentCharacterCount < howManyEnemy || _currentCharacterCount == howManyEnemy)
-            {
-                Debug.Log("Game Over");
-            }
-            else
-            {
-                Debug.Log("You Win");
+                _mainCharacter.GetComponent<Animator>().SetBool("attack", false);
+                if (_currentCharacterCount < howManyEnemy || _currentCharacterCount == howManyEnemy)
+                {
+                    Debug.Log("Game Over");
+                }
+                else
+                {
+                    Debug.Log("You Win");
+                }
             }
         }
+       
     }
     public void AICharacterControl(string type, int value, Transform _position)
     {

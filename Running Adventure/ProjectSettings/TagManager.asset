@@ -18,6 +18,7 @@ TagManager:
   - Character Stain
   - Enemy
   - FinishTrigger
+  - Stick
   layers:
   - Default
   - TransparentFX
