@@ -11,6 +11,13 @@ TagManager:
   - Substraction
   - Division
   - Multiplication
+  - Saw
+  - fan
+  - AICharacter
+  - Hammer
+  - Character Stain
+  - Enemy
+  - FinishTrigger
   layers:
   - Default
   - TransparentFX

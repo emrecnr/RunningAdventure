@@ -20,11 +20,30 @@ public class AICharacter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacles"))
+        if (other.CompareTag("Obstacles")||other.CompareTag("Saw")||other.CompareTag("fan"))
         {
-            GameManager._currentCharacterCount--;
+            Vector3 offset = new Vector3(transform.position.x,0.25f,transform.position.z);
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset);
+            transform.position = Vector3.zero;
             gameObject.SetActive(false);
 
+        }
+        if(other.CompareTag("Hammer"))
+        {
+            Vector3 offset = new Vector3(transform.position.x, 0.25f, transform.position.z);
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset,true);
+           
+            transform.position = Vector3.zero;
+            gameObject.SetActive(false);
+        }
+
+        if (other.CompareTag("Enemy"))
+        {
+            Vector3 offset = new Vector3(transform.position.x, 0.25f, transform.position.z);
+            GameObject.FindWithTag("GameManager").GetComponent<GameManager>().DestroyEffectCreate(offset,false,false);
+
+            transform.position = Vector3.zero;
+            gameObject.SetActive(false);
         }
     }
 }

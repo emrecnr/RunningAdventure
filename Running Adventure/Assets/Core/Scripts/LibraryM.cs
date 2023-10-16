@@ -8,7 +8,7 @@ namespace Math
 {
     public class LibraryM : MonoBehaviour
     {
-        public static void Multiplication(int value, List<GameObject> characters, Transform _position)
+        public static void Multiplication(int value, List<GameObject> characters, Transform _position, List<GameObject> spawnParticles)
         {
             int loopTime = (GameManager._currentCharacterCount * value) - GameManager._currentCharacterCount;
             int num = 0;
@@ -20,6 +20,17 @@ namespace Math
                 {
                     if (!character.activeInHierarchy)
                     {
+                        foreach (var spawn in spawnParticles)
+                        {
+                            if (!spawn.activeInHierarchy)
+                            {
+
+                                spawn.SetActive(true);
+                                spawn.transform.position = _position.position;
+                                spawn.GetComponent<ParticleSystem>().Play();
+                                break;
+                            }
+                        }
                         character.transform.position = _position.position;
                         character.SetActive(true);
                         num++;
@@ -37,7 +48,7 @@ namespace Math
             GameManager._currentCharacterCount *= value;
 
         }
-        public static void Addition(int value, List<GameObject> characters, Transform _position)
+        public static void Addition(int value, List<GameObject> characters, Transform _position, List<GameObject> spawnParticles)
         {
             int num2 = 0;
             foreach (var character in characters)
@@ -47,6 +58,17 @@ namespace Math
                 {
                     if (!character.activeInHierarchy)
                     {
+                        foreach (var spawn in spawnParticles)
+                        {
+                            if (!spawn.activeInHierarchy)
+                            {
+
+                                spawn.SetActive(true);
+                                spawn.transform.position = _position.position;
+                                spawn.GetComponent<ParticleSystem>().Play();
+                                break;
+                            }
+                        }
                         character.transform.position = _position.position;
                         character.SetActive(true);
                         num2++;
@@ -64,12 +86,23 @@ namespace Math
             GameManager._currentCharacterCount += value;
 
         }
-        public static void Substraction(int value, List<GameObject> characters)
+        public static void Substraction(int value, List<GameObject> characters, List<GameObject> destroyParticles)
         {
             if (GameManager._currentCharacterCount < value)
             {
                 foreach (var character in characters)
                 {
+                    foreach(var destroy in destroyParticles)
+                    {
+                        if (!destroy.activeInHierarchy)
+                        {
+                            Vector3 offset = new Vector3(character.transform.position.x, 0.25f, character.transform.position.z);
+                            destroy.SetActive(true);
+                            destroy.transform.position = offset;
+                            destroy.GetComponent<ParticleSystem>().Play();
+                            break;
+                        }
+                    }   
                     character.transform.position = Vector3.zero;
                     character.SetActive(false);
                 }
@@ -83,8 +116,20 @@ namespace Math
 
                     if (num3 != value)
                     {
+
                         if (character.activeInHierarchy)
                         {
+                            foreach (var destroy in destroyParticles)
+                            {
+                                if (!destroy.activeInHierarchy)
+                                {
+                                    Vector3 offset = new Vector3(character.transform.position.x, 0.25f, character.transform.position.z);
+                                    destroy.SetActive(true);
+                                    destroy.transform.position = offset;
+                                    destroy.GetComponent<ParticleSystem>().Play();
+                                    break;
+                                }
+                            }
                             character.transform.position = Vector3.zero;
                             character.SetActive(false);
                             num3++;
@@ -103,12 +148,23 @@ namespace Math
             }
 
         }
-        public static void Division(int value, List<GameObject> characters)
+        public static void Division(int value, List<GameObject> characters, List<GameObject> destroyParticles)
         {
             if (GameManager._currentCharacterCount <= value)
             {
                 foreach (var character in characters)
                 {
+                    foreach (var destroy in destroyParticles)
+                    {
+                        if (!destroy.activeInHierarchy)
+                        {
+                            Vector3 offset = new Vector3(character.transform.position.x, 0.25f, character.transform.position.z);
+                            destroy.SetActive(true);
+                            destroy.transform.position = offset;
+                            destroy.GetComponent<ParticleSystem>().Play();
+                            break;
+                        }
+                    }
                     character.transform.position = Vector3.zero;
                     character.SetActive(false);
                 }
@@ -125,6 +181,17 @@ namespace Math
                     {
                         if (character.activeInHierarchy)
                         {
+                            foreach (var destroy in destroyParticles)
+                            {
+                                if (!destroy.activeInHierarchy)
+                                {
+                                    Vector3 offset = new Vector3(character.transform.position.x, 0.25f, character.transform.position.z);
+                                    destroy.SetActive(true);
+                                    destroy.transform.position = offset;
+                                    destroy.GetComponent<ParticleSystem>().Play();
+                                    break;
+                                }
+                            }
                             character.transform.position = Vector3.zero;
                             character.SetActive(false);
                             num3++;
