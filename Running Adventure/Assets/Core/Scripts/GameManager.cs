@@ -1,4 +1,4 @@
-using Math;
+using MyLibrary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +9,8 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
 
-
+    Maths _math = new Maths();
+    SaveLoad _saveLoad = new SaveLoad();
 
     public static int _currentCharacterCount;
 
@@ -24,9 +25,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _mainCharacter;
     public bool isGameOver = false;
     public bool isFinish;
+
+
     private void Start()
     {
         CreateEnemy();
+
+        _saveLoad.SaveString("Name", "Platanus");
+
+        _saveLoad.SaveFloat("Score", 3f);
     }
     private void Update()
     {
@@ -85,6 +92,15 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
+                    if (_currentCharacterCount > 5)
+                    {
+                        _saveLoad.SaveInteger("Score", _saveLoad.LoadInteger("Score") + 600);
+                    }
+                    else
+                    {
+                        _saveLoad.SaveInteger("Score", _saveLoad.LoadInteger("Score") + 200);
+                    }
+
                     Debug.Log("You Win");
                 }
             }
@@ -96,23 +112,23 @@ public class GameManager : MonoBehaviour
         switch (type)
         {
             case "Multiplication":
-                LibraryM.Multiplication(value, characters, _position, spawnEffects);
+                _math.Multiplication(value, characters, _position, spawnEffects);
                 break;
 
 
             case "Addition":
-                LibraryM.Addition(value, characters, _position, spawnEffects);
+                _math.Addition(value, characters, _position, spawnEffects);
                 break;
 
             case "Substraction":
 
-                LibraryM.Substraction(value, characters, destroyEffects);
+                _math.Substraction(value, characters, destroyEffects);
 
                 break;
 
             case "Division":
 
-                LibraryM.Division(value, characters, destroyEffects);
+                _math.Division(value, characters, destroyEffects);
 
                 break;
         }
