@@ -95,17 +95,19 @@ public class GameManager : MonoBehaviour
                     if (_currentCharacterCount > 5)
                     {
                         _saveLoad.SaveInteger("Score", _saveLoad.LoadInteger("Score") + 600);
+                        _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
                     }
                     else
                     {
                         _saveLoad.SaveInteger("Score", _saveLoad.LoadInteger("Score") + 200);
+                        _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
                     }
-
                     Debug.Log("You Win");
+
                 }
             }
         }
-       
+
     }
     public void AICharacterControl(string type, int value, Transform _position)
     {
@@ -156,7 +158,7 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-       
+
         if (hammer)
         {
             foreach (var effect in stainEffects)
@@ -177,5 +179,5 @@ public class GameManager : MonoBehaviour
             BattleState();
         }
     }
-  
+
 }
