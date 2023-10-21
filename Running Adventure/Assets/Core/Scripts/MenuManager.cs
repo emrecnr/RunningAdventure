@@ -8,11 +8,16 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     SaveLoad _saveLoad = new SaveLoad();
-
+    DataController _dataController = new DataController();
     [SerializeField] private GameObject _quitPanel;
+
+    public List<ItemData> _itemData = new List<ItemData>();
     private void Start()
     {
         _saveLoad.Check();
+        // TODO : FINISH TIME
+        //_dataController.FirsTimeSave(_itemData); 
+        
     }
 
 

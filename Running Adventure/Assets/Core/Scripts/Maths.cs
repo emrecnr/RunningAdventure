@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MyLibrary
 {
@@ -234,17 +238,17 @@ namespace MyLibrary
 
     public class SaveLoad
     {
-        public void SaveString(string key,string value)
+        public void SaveString(string key, string value)
         {
-            PlayerPrefs.SetString(key,value);
+            PlayerPrefs.SetString(key, value);
             PlayerPrefs.Save();
         }
-        public void SaveInteger(string key,int value)
+        public void SaveInteger(string key, int value)
         {
             PlayerPrefs.SetInt(key, value);
             PlayerPrefs.Save();
         }
-        public void SaveFloat(string key,float value)
+        public void SaveFloat(string key, float value)
         {
             PlayerPrefs.SetFloat(key, value);
             PlayerPrefs.Save();
@@ -271,7 +275,69 @@ namespace MyLibrary
                 PlayerPrefs.SetInt("LastLevel", 5);
                 PlayerPrefs.SetInt("Score", 100);
             }
-       
+
+        }
+    }
+
+    public class Data
+    {
+        public static List<ItemData> _itemData = new List<ItemData>();
+    }
+    [Serializable]
+    public class ItemData
+    {
+        public int groupIndex;
+        public int itemIndex;
+        public string itemName;
+        public int cost;
+        public bool buyState;
+    }
+    public class DataController
+    {
+
+
+        public void Save(List<ItemData> _itemData)
+        {
+
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.OpenWrite(Application.persistentDataPath + "/ItemData.gd");
+            bf.Serialize(file, _itemData);
+            file.Close();
+
+
+        }
+        
+        List<ItemData> _itemDList;
+        public void Load()
+        {
+            if (File.Exists(Application.persistentDataPath + "/ItemData.gd"))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(Application.persistentDataPath + "/ItemData.gd", FileMode.Open);
+                _itemDList = (List<ItemData>)bf.Deserialize(file);
+                file.Close();
+
+            }
+            else
+            {
+                Debug.LogError("Not Found Data");
+            }
+        }
+        public void FirsTimeSave(List<ItemData> _itemData)
+        {
+            if (!File.Exists(Application.persistentDataPath + "/ItemData.gd"))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Create(Application.persistentDataPath + "/ItemData.gd");
+                bf.Serialize(file, _itemData);
+                file.Close();
+            }
+        }
+
+        public List<ItemData> GetList()
+        {
+            return _itemDList;
+
         }
     }
 
