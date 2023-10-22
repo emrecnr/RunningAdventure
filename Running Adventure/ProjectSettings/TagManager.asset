@@ -20,6 +20,7 @@ TagManager:
   - FinishTrigger
   - Stick
   - OtherCharacter
+  - MenuMusic
   layers:
   - Default
   - TransparentFX

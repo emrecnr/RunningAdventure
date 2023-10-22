@@ -2,9 +2,12 @@ using MyLibrary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
+using UnityEngine.UI ;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +18,7 @@ public class GameManager : MonoBehaviour
     public static int _currentCharacterCount;
 
     [SerializeField] public List<GameObject> characters;
+    [Header("EFFECTS")]
     [SerializeField] private List<GameObject> spawnEffects;
     [SerializeField] private List<GameObject> destroyEffects;
     [SerializeField] private List<GameObject> stainEffects;
@@ -25,15 +29,37 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _mainCharacter;
     public bool isGameOver = false;
     public bool isFinish;
+    [Header("-----CAPS-----")]
+    [SerializeField] private GameObject[] _caps;
+
+    [Header("-----STICKS-----")]
+    [SerializeField] private GameObject[] _sticks;
+
+    [Header("-----MATERIALS-----")]
+    [SerializeField] private Material[] _materials;
+    [SerializeField] private Material _defaultMaterial;
+    [SerializeField] private SkinnedMeshRenderer _skinnedMeshRenderer;
 
 
+    Scene _scene;
+    [Header("-----GENERAL DATA-----")]
+    [SerializeField] private AudioSource[] _audios;
+    [SerializeField] private GameObject[] _panels;
+    [SerializeField] private Slider _gameMusicSlider;
+    
+    private void Awake()
+    {
+        _audios[0].volume = _saveLoad.LoadFloat("GameMusic");
+        _gameMusicSlider.value = _saveLoad.LoadFloat("GameMusic");
+        _audios[1].volume = _saveLoad.LoadFloat("MenuFX");
+        Destroy(GameObject.FindWithTag("MenuMusic"));
+        CheckItem();
+    } 
     private void Start()
     {
         CreateEnemy();
+        _scene = SceneManager.GetActiveScene();
 
-        _saveLoad.SaveString("Name", "Platanus");
-
-        _saveLoad.SaveFloat("Score", 3f);
     }
     private void Update()
     {
@@ -94,14 +120,22 @@ public class GameManager : MonoBehaviour
                 {
                     if (_currentCharacterCount > 5)
                     {
-                        _saveLoad.SaveInteger("Score", _saveLoad.LoadInteger("Score") + 600);
-                        _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
+                        if (_scene.buildIndex == _saveLoad.LoadInteger("LastLevel"))
+                        {
+                            _saveLoad.SaveInteger("Gem", _saveLoad.LoadInteger("Gem") + 600);
+                            _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
+                        }
+
                     }
                     else
                     {
-                        _saveLoad.SaveInteger("Score", _saveLoad.LoadInteger("Score") + 200);
-                        _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
+                        if (_scene.buildIndex == _saveLoad.LoadInteger("LastLevel"))
+                        {
+                            _saveLoad.SaveInteger("Gem", _saveLoad.LoadInteger("Gem") + 200);
+                            _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
+                        }
                     }
+
                     Debug.Log("You Win");
 
                 }
@@ -180,4 +214,77 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void CheckItem()
+    {
+        if (_saveLoad.LoadInteger("ActiveCap") != -1)
+        {
+            _caps[_saveLoad.LoadInteger("ActiveCap")].SetActive(true);
+        }
+        if (_saveLoad.LoadInteger("ActiveStick") != -1)
+        {
+            _sticks[_saveLoad.LoadInteger("ActiveStick")].SetActive(true);
+        }
+        if (_saveLoad.LoadInteger("ActiveSkin") != -1)
+        {
+            Material[] mats = _skinnedMeshRenderer.materials;
+            mats[0] = _materials[_saveLoad.LoadInteger("ActiveSkin")];
+            _skinnedMeshRenderer.materials = mats;
+        }
+        else
+        {
+            Material[] mats = _skinnedMeshRenderer.materials;
+            mats[0] = _defaultMaterial;
+            _skinnedMeshRenderer.materials = mats;
+        }
+
+
+
+    }
+
+    public void QuitButton(string state)
+    {
+        _audios[1].Play();
+        Time.timeScale = 0;
+        if (state == "Pause")
+        {
+            _panels[0].SetActive(true);
+        }
+        else if (state == "Home")
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(0);            
+        }
+        else if (state == "Resume")
+        {
+            _panels[0].SetActive(false);
+            Time.timeScale = 1;
+        }
+        else if (state == "Replay")
+        {
+            SceneManager.LoadScene(_scene.buildIndex);
+            Time.timeScale = 1;
+        }
+    }
+
+    public void Settings(string state)
+    {
+        if (state == "Settings")
+        {
+            Time.timeScale = 0;
+            _panels[1].SetActive(true);            
+        }
+        else
+        {
+            Time.timeScale = 1;
+            _panels[1].SetActive(false);
+        }
+    }
+    public void VolumeSet()
+    {
+        _saveLoad.SaveFloat("GameMusic", _gameMusicSlider.value);
+        _audios[0].volume = _gameMusicSlider.value;
+        
+    }
+        
 }
+

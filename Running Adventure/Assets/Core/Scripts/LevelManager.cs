@@ -2,6 +2,7 @@ using MyLibrary;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 using UnityEngine.SceneManagement;
@@ -12,9 +13,12 @@ public class LevelManager : MonoBehaviour
     SaveLoad _saveLoad = new SaveLoad();
     [SerializeField] Button[] _levelButtons;
     [SerializeField] private Sprite _lockSprite;
+    [SerializeField] private AudioSource _audio;
     int level;
     private void Start()
     {
+        _audio.volume = _saveLoad.LoadFloat("MenuFX");
+
         int currentLevel = _saveLoad.LoadInteger("LastLevel") - 4; // ilk level sahne indexi 5 oldugu icin
         int index = 1;
         for (int i = 0; i < _levelButtons.Length; i++)
@@ -35,11 +39,13 @@ public class LevelManager : MonoBehaviour
     }
     public void LoadScene(int index)
     {
+        _audio.Play();
         SceneManager.LoadScene(index);
     }
 
     public void Back()
     {
+        _audio.Play();
         // MENU
         SceneManager.LoadScene(0);
     }

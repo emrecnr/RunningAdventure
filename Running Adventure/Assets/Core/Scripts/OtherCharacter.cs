@@ -15,10 +15,6 @@ public class OtherCharacter : MonoBehaviour
 
     bool isTriggered;
 
-    private void Start()
-    {
-
-    }
     private void LateUpdate()
     {
         if (isTriggered)

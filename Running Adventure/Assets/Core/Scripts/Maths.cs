@@ -273,7 +273,13 @@ namespace MyLibrary
             if (!PlayerPrefs.HasKey("LastLevel"))
             {
                 PlayerPrefs.SetInt("LastLevel", 5);
-                PlayerPrefs.SetInt("Score", 100);
+                PlayerPrefs.SetInt("Gem", 100);
+                PlayerPrefs.SetInt("ActiveCap", -1);
+                PlayerPrefs.SetInt("ActiveStick", -1);
+                PlayerPrefs.SetInt("ActiveSkin", -1);
+                PlayerPrefs.SetFloat("MenuMusic", 1);
+                PlayerPrefs.SetFloat("MenuFX", 1);
+                PlayerPrefs.SetFloat("GameMusic", 1);
             }
 
         }

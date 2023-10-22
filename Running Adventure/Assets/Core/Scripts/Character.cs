@@ -25,43 +25,44 @@ public class Character : MonoBehaviour
     {
         if (!isFinish)
         {
-           transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
 
         }
     }
 
     private void Update()
     {
-
-
-        if (isFinish)
+        if (Time.timeScale != 0)
         {
-            transform.position = Vector3.Lerp(transform.position, _battlePoint.transform.position, 0.015f);
-            if (_slider.value != 0 )
+            if (isFinish)
             {
-                _slider.value -= 0.1f;
-            }
+                transform.position = Vector3.Lerp(transform.position, _battlePoint.transform.position, 0.015f);
+                if (_slider.value != 0)
+                {
+                    _slider.value -= 0.1f;
+                }
 
-        }
-        else
-        {
-            //Slider
-            float distance = Vector3.Distance(transform.position, _point.transform.position);
-            _slider.value = distance;
-            //
-            if (Input.GetKey(KeyCode.Mouse0))
+            }
+            else
             {
-                if (Input.GetAxis("Mouse X") < 0)
+                //Slider
+                float distance = Vector3.Distance(transform.position, _point.transform.position);
+                _slider.value = distance;
+                //
+
+                if (Input.GetKey(KeyCode.Mouse0))
                 {
-                    transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x - .1f, transform.position.y, transform.position.z), .3f);
-                }
-                if (Input.GetAxis("Mouse X") > 0)
-                {
-                    transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z), .3f);
+                    if (Input.GetAxis("Mouse X") < 0)
+                    {
+                        transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x - .1f, transform.position.y, transform.position.z), .3f);
+                    }
+                    if (Input.GetAxis("Mouse X") > 0)
+                    {
+                        transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z), .3f);
+                    }
                 }
             }
         }
-        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -76,7 +77,7 @@ public class Character : MonoBehaviour
         {
             _camera.isFinish = true;
             _gameManager.TriggerEnemy();
-            isFinish= true;
+            isFinish = true;
             Debug.Log("!!! Finish !!!");
         }
         else if (other.CompareTag("OtherCharacter"))
@@ -84,14 +85,14 @@ public class Character : MonoBehaviour
             _gameManager.characters.Add(other.gameObject);
             GameManager._currentCharacterCount++;
             other.gameObject.tag = "AICharacter";
-                
+
         }
     }
-    
+
     //Direk takilmalirini engellemek icin
     private void OnCollisionEnter(Collision collision)
-    {       
-        if (collision.gameObject.CompareTag("Stick")|| collision.gameObject.CompareTag("Obstacles")|| collision.gameObject.CompareTag("fan"))
+    {
+        if (collision.gameObject.CompareTag("Stick") || collision.gameObject.CompareTag("Obstacles") || collision.gameObject.CompareTag("fan"))
         {
             if (transform.position.x > 0)
             {
@@ -101,7 +102,7 @@ public class Character : MonoBehaviour
             {
                 transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z);
             }
-            
+
         }
     }
 
