@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _quitPanel: {fileID: 8206828841243546750}
-  _itemData:
+  _defaultItemData:
   - groupIndex: 1
     itemIndex: 0
     itemName: Cap 1
@@ -344,13 +344,13 @@ MonoBehaviour:
   - groupIndex: 3
     itemIndex: 0
     itemName: Skin 1
-    cost: 0
+    cost: 100
     buyState: 0
   - groupIndex: 3
     itemIndex: 1
     itemName: Skin 2
     cost: 300
-    buyState: 0
+    buyState: 1
   - groupIndex: 3
     itemIndex: 2
     itemName: Skin 3
@@ -361,7 +361,93 @@ MonoBehaviour:
     itemName: Skin 4
     cost: 800
     buyState: 0
+  _defaultLanguageData:
+  - index: 0
+    _languageTR:
+    - Text: OYNA
+    - Text: "\xD6ZELLE\u015ET\u0130R"
+    - Text: "LEVEL SE\xC7"
+    - Text: MARKET
+    - Text: AYARLAR
+    - Text: "\xC7IKI\u015E"
+    - Text: "Oyundan \xC7\u0131kmak \u0130stedi\u011Finize Emin misiniz ?"
+    - Text: "Hay\u0131r"
+    - Text: Evet
+    _languageENG:
+    - Text: PLAY
+    - Text: CUSTOMIZE
+    - Text: SELECT LEVEL
+    - Text: SHOP
+    - Text: SETTINGS
+    - Text: QUIT
+    - Text: Are you sure you want to quit the game?
+    - Text: NO
+    - Text: YES
+  - index: 0
+    _languageTR:
+    - Text: "\u015EAPKA"
+    - Text: SOPA
+    - Text: "KOST\xDCM"
+    - Text: "GER\u0130 D\xD6N"
+    - Text: ITEM YOK
+    - Text: SATIN AL
+    - Text: KAYDET
+    _languageENG:
+    - Text: HAT
+    - Text: BAT
+    - Text: SKIN
+    - Text: TURN BACK
+    - Text: NO ITEM
+    - Text: BUY
+    - Text: SAVE
+  - index: 0
+    _languageTR:
+    - Text: "LEVEL SE\xC7"
+    _languageENG:
+    - Text: SELECT LEVEL
+  - index: 0
+    _languageTR:
+    - Text: "ALI\u015EVER\u0130\u015E"
+    _languageENG:
+    - Text: SHOPPING
+  - index: 0
+    _languageTR:
+    - Text: AYARLAR
+    - Text: "MEN\xDC SES"
+    - Text: MENU FX
+    - Text: "OYUN SES\u0130"
+    - Text: "D\u0130L"
+    _languageENG:
+    - Text: SETTINGS
+    - Text: MENU SOUND
+    - Text: MENU FX
+    - Text: GAME SOUND
+    - Text: LANGUAGE
+  - index: 0
+    _languageTR:
+    - Text: AYARLAR
+    - Text: "OYUN SES\u0130"
+    - Text: DURAKLATILDI
+    - Text: KAZANDIN
+    - Text: "KAYBETT\u0130N"
+    _languageENG:
+    - Text: SETTINGS
+    - Text: GAME SOUND
+    - Text: PAUSED
+    - Text: YOU WIN
+    - Text: YOU LOSE
   _buttonMusic: {fileID: 47224941}
+  languageDatas: []
+  _languageTexts:
+  - {fileID: 1023476870}
+  - {fileID: 270684089}
+  - {fileID: 1793168178}
+  - {fileID: 259136438}
+  - {fileID: 955792758}
+  - {fileID: 1260734184}
+  - {fileID: 6986528256058041168}
+  - {fileID: 1654782289206713975}
+  - {fileID: 2024892384486484861}
 --- !u!4 &47224940
 Transform:
   m_ObjectHideFlags: 0

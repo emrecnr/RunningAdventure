@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     Maths _math = new Maths();
     SaveLoad _saveLoad = new SaveLoad();
+    DataController _dataController = new DataController();
 
     public static int _currentCharacterCount;
 
@@ -46,7 +48,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource[] _audios;
     [SerializeField] private GameObject[] _panels;
     [SerializeField] private Slider _gameMusicSlider;
-    
+
+    public List<LanguageData> languageDatas = new List<LanguageData>();
+    private List<LanguageData> _readedData = new List<LanguageData>();
+    public TextMeshProUGUI[] _languageTexts;
     private void Awake()
     {
         _audios[0].volume = _saveLoad.LoadFloat("GameMusic");
@@ -57,6 +62,10 @@ public class GameManager : MonoBehaviour
     } 
     private void Start()
     {
+        _dataController.LanguageLoad();
+        _readedData = _dataController.LanguageTransaction();
+        languageDatas.Add(_readedData[5]);
+        LanguagePreference();
         CreateEnemy();
         _scene = SceneManager.GetActiveScene();
 
@@ -65,7 +74,23 @@ public class GameManager : MonoBehaviour
     {
 
     }
-
+    private void LanguagePreference()
+    {
+        if (_saveLoad.LoadString("Language") == "TR")
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageTR[i].Text;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageENG[i].Text;
+            }
+        }
+    }
     public void CreateEnemy()
     {
         for (int i = 0; i < howManyEnemy; i++)

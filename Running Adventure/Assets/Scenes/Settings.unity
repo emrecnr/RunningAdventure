@@ -604,6 +604,17 @@ MonoBehaviour:
   _menuMusic: {fileID: 6948309651324878980}
   _menuFx: {fileID: 2469172836510015050}
   _gameMusic: {fileID: 1092658906135776233}
+  languageDatas: []
+  _languageTexts:
+  - {fileID: 2727173877898384121}
+  - {fileID: 7223979649460248545}
+  - {fileID: 3898841996228917609}
+  - {fileID: 4792929660741281800}
+  - {fileID: 5466425285179710526}
+  _languageText: {fileID: 9188974950588233658}
+  _languageButtons:
+  - {fileID: 4389047002456236286}
+  - {fileID: 6169082754675278739}
 --- !u!82 &1644280467
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2653,13 +2664,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1644280466}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: ChangeLanguange
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Left
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &4422274090403595255
@@ -3148,7 +3159,7 @@ GameObject:
   - component: {fileID: 5028642645834870137}
   - component: {fileID: 9188974950588233658}
   m_Layer: 5
-  m_Name: Languange Text
+  m_Name: Language Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3341,13 +3352,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1644280466}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
         m_MethodName: ChangeLanguange
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Right
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &6184931392454007650

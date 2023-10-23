@@ -20,7 +20,7 @@ public class CustomizeManager : MonoBehaviour
     [SerializeField] private GameObject _canvas;
     [SerializeField] private GameObject[] _generalPanels;
     [SerializeField] private Button[] _processButtons;
-    [SerializeField] private TextMeshProUGUI _buyText;
+    
     private int _activePanelIndex;
     [Header("-----CAPS-----")]
     [SerializeField] private Button[] _capButtons;
@@ -45,10 +45,17 @@ public class CustomizeManager : MonoBehaviour
     private SaveLoad _saveLoad = new SaveLoad();
     private DataController _dataController = new DataController();
     [Header("GENERAL DATA")]
-    public List<ItemData> _itemData = new List<ItemData>();
 
     [SerializeField] Animator _equippedAnimator;
     [SerializeField] AudioSource[] _audios;
+
+    public List<ItemData> _itemData = new List<ItemData>();
+    public List<LanguageData> languageDatas = new List<LanguageData>();
+    private List<LanguageData> _readedData = new List<LanguageData>();
+    public TextMeshProUGUI[] _languageTexts;
+
+    string _buyText;
+    string _itemText;
 
     private void Start()
     {
@@ -65,8 +72,32 @@ public class CustomizeManager : MonoBehaviour
         {
             item.volume = _saveLoad.LoadFloat("MenuFX");
         }
+        _dataController.LanguageLoad();
+        _readedData = _dataController.LanguageTransaction();
+        languageDatas.Add(_readedData[1]);
+        LanguagePreference();
     }
-
+    private void LanguagePreference()
+    {
+        if (_saveLoad.LoadString("Language") == "TR")
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageTR[i].Text;
+            }
+            _buyText = languageDatas[0]._languageTR[5].Text;
+            _itemText = languageDatas[0]._languageTR[4].Text;
+        }
+        else
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageENG[i].Text;
+            }
+            _buyText = languageDatas[0]._languageENG[5].Text;
+            _itemText = languageDatas[0]._languageENG[4].Text;
+        }
+    }
     public void CheckStatus(int section, bool status = false)
     {
         if (section == 0) // CAP
@@ -80,11 +111,11 @@ public class CustomizeManager : MonoBehaviour
 
                 _processButtons[0].interactable = false;
                 _processButtons[1].interactable = false;
-                _buyText.text = "BUY";
+                _languageTexts[5].text = _buyText;
                 if (!status)
                 {
                     _capIndex = -1;
-                    _capText.text = "None Cap";
+                    _capText.text = _itemText;
                 }
 
 
@@ -99,7 +130,7 @@ public class CustomizeManager : MonoBehaviour
                 _caps[_capIndex].SetActive(true);
 
                 _capText.text = _itemData[_capIndex].itemName;
-                _buyText.text = "BUY";
+                _languageTexts[5].text = _buyText;
                 _processButtons[0].interactable = false;
                 _processButtons[1].interactable = true;
 
@@ -114,14 +145,14 @@ public class CustomizeManager : MonoBehaviour
                 {
                     item.SetActive(false);
                 }
-                _buyText.text = "BUY";
+                _languageTexts[5].text = _buyText;
 
                 _processButtons[0].interactable = false;
                 _processButtons[1].interactable = false;
                 if (!status)
                 {
                     _stickIndex = -1;
-                    _stickText.text = "None Stick";
+                    _stickText.text = _itemText;
                 }
 
             }
@@ -135,7 +166,7 @@ public class CustomizeManager : MonoBehaviour
                 _sticks[_stickIndex].SetActive(true);
 
                 _stickText.text = _itemData[_stickIndex + 3].itemName;
-                _buyText.text = "BUY";
+                _languageTexts[5].text = _buyText;
                 _processButtons[0].interactable = false;
                 _processButtons[1].interactable = true;
             }
@@ -146,9 +177,9 @@ public class CustomizeManager : MonoBehaviour
             {
                 if (!status)
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _skinIndex = -1;
-                    _skinText.text = "None Skin";
+                    _skinText.text = _itemText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = false;
                 }
@@ -157,7 +188,7 @@ public class CustomizeManager : MonoBehaviour
                     Material[] mats = _skinnedMeshRenderer.materials;
                     mats[0] = _defaultMaterial;
                     _skinnedMeshRenderer.materials = mats;
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                 }
 
             }
@@ -169,7 +200,7 @@ public class CustomizeManager : MonoBehaviour
                 _skinnedMeshRenderer.materials = mats;
 
                 _skinText.text = _itemData[_skinIndex + 6].itemName;
-                _buyText.text = "BUY";
+                _languageTexts[5].text = _buyText;
                 _processButtons[0].interactable = false;
                 _processButtons[1].interactable = true;
 
@@ -232,7 +263,7 @@ public class CustomizeManager : MonoBehaviour
 
                 if (!_itemData[_capIndex].buyState)
                 {
-                    _buyText.text = _itemData[_capIndex].cost + "- BUY";
+                    _languageTexts[5].text = _itemData[_capIndex].cost + " - " + _buyText;
                     _processButtons[1].interactable = false;
                     if (_saveLoad.LoadInteger("Gem") < _itemData[_capIndex].cost)
                     {
@@ -247,7 +278,7 @@ public class CustomizeManager : MonoBehaviour
                 }
                 else
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = true;
                 }
@@ -260,7 +291,7 @@ public class CustomizeManager : MonoBehaviour
                 _capText.text = _itemData[_capIndex].itemName;
                 if (!_itemData[_capIndex].buyState)
                 {
-                    _buyText.text = _itemData[_capIndex].cost + "- BUY";
+                    _languageTexts[5].text = _itemData[_capIndex].cost + " - " + _buyText;
 
                     _processButtons[1].interactable = false;
                     if (_saveLoad.LoadInteger("Gem") < _itemData[_capIndex].cost)
@@ -274,7 +305,7 @@ public class CustomizeManager : MonoBehaviour
                 }
                 else
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = true;
                 }
@@ -308,7 +339,7 @@ public class CustomizeManager : MonoBehaviour
                     _capText.text = _itemData[_capIndex].itemName;
                     if (!_itemData[_capIndex].buyState)
                     {
-                        _buyText.text = _itemData[_capIndex].cost + "- BUY";
+                        _languageTexts[5].text = _itemData[_capIndex].cost + " - " + _buyText;
                         _processButtons[1].interactable = false;
                         if (_saveLoad.LoadInteger("Gem") < _itemData[_capIndex].cost)
                         {
@@ -321,7 +352,7 @@ public class CustomizeManager : MonoBehaviour
                     }
                     else
                     {
-                        _buyText.text = "BUY";
+                        _languageTexts[5].text = _buyText;
                         _processButtons[0].interactable = false;
                         _processButtons[1].interactable = true;
                     }
@@ -329,16 +360,16 @@ public class CustomizeManager : MonoBehaviour
                 else
                 {
                     _capButtons[0].interactable = false;
-                    _capText.text = "None Cap";
-                    _buyText.text = "BUY";
+                    _capText.text = _itemText;
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                 }
             }
             else
             {
                 _capButtons[0].interactable = false;
-                _capText.text = "None Cap";
-                _buyText.text = "BUY";
+                _capText.text = _itemText;
+                _languageTexts[5].text = _buyText;
                 _processButtons[0].interactable = false;
             }
 
@@ -360,7 +391,7 @@ public class CustomizeManager : MonoBehaviour
                 _stickText.text = _itemData[_stickIndex + 3].itemName;
                 if (!_itemData[_stickIndex + 3].buyState)
                 {
-                    _buyText.text = _itemData[_stickIndex + 3].cost + "- BUY";
+                    _languageTexts[5].text = _itemData[_stickIndex + 3].cost + " - " + _buyText;
                     _processButtons[1].interactable = false;
                     if (_saveLoad.LoadInteger("Gem") < _itemData[_stickIndex + 3].cost)
                     {
@@ -373,7 +404,7 @@ public class CustomizeManager : MonoBehaviour
                 }
                 else
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = true;
                 }
@@ -386,7 +417,7 @@ public class CustomizeManager : MonoBehaviour
                 _stickText.text = _itemData[_stickIndex + 3].itemName;
                 if (!_itemData[_stickIndex + 3].buyState)
                 {
-                    _buyText.text = _itemData[_stickIndex + 3].cost + "- BUY";
+                    _languageTexts[5].text = _itemData[_stickIndex + 3].cost + " - " + _buyText;
                     _processButtons[1].interactable = false;
                     if (_saveLoad.LoadInteger("Gem") < _itemData[_stickIndex + 3].cost)
                     {
@@ -399,7 +430,7 @@ public class CustomizeManager : MonoBehaviour
                 }
                 else
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = true;
                 }
@@ -432,7 +463,7 @@ public class CustomizeManager : MonoBehaviour
                     _stickText.text = _itemData[_stickIndex + 3].itemName;
                     if (!_itemData[_stickIndex + 3].buyState)
                     {
-                        _buyText.text = _itemData[_stickIndex + 3].cost + "- BUY";
+                        _languageTexts[5].text = _itemData[_stickIndex + 3].cost + " - " + _buyText;
                         _processButtons[1].interactable = false;
                         if (_saveLoad.LoadInteger("Gem") < _itemData[_stickIndex + 3].cost)
                         {
@@ -445,7 +476,7 @@ public class CustomizeManager : MonoBehaviour
                     }
                     else
                     {
-                        _buyText.text = "BUY";
+                        _languageTexts[5].text = _buyText;
                         _processButtons[0].interactable = false;
                         _processButtons[1].interactable = true;
                     }
@@ -453,16 +484,16 @@ public class CustomizeManager : MonoBehaviour
                 else
                 {
                     _stickButtons[0].interactable = false;
-                    _stickText.text = "None Stick";
-                    _buyText.text = "BUY";
+                    _stickText.text = _itemText;
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                 }
             }
             else
             {
                 _stickButtons[0].interactable = false;
-                _stickText.text = "None Stick";
-                _buyText.text = "BUY";
+                _stickText.text = _itemText;
+                _languageTexts[5].text = _buyText;
                 _processButtons[0].interactable = false;
             }
 
@@ -487,7 +518,7 @@ public class CustomizeManager : MonoBehaviour
                 _skinText.text = _itemData[_skinIndex + 6].itemName;
                 if (!_itemData[_skinIndex + 6].buyState)
                 {
-                    _buyText.text = _itemData[_skinIndex + 6].cost + "- BUY";
+                    _languageTexts[5].text = _itemData[_skinIndex + 6].cost + " - " + _buyText;
                     _processButtons[1].interactable = false;
                     if (_saveLoad.LoadInteger("Gem") < _itemData[_skinIndex + 6].cost)
                     {
@@ -500,7 +531,7 @@ public class CustomizeManager : MonoBehaviour
                 }
                 else
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = true;
                 }
@@ -517,7 +548,7 @@ public class CustomizeManager : MonoBehaviour
                 _skinText.text = _itemData[_skinIndex + 6].itemName;
                 if (!_itemData[_skinIndex + 6].buyState)
                 {
-                    _buyText.text = _itemData[_skinIndex + 6].cost + "- BUY";
+                    _languageTexts[5].text = _itemData[_skinIndex + 6].cost + " - " + _buyText;
                     _processButtons[1].interactable = false;
                     if (_saveLoad.LoadInteger("Gem") < _itemData[_skinIndex + 6].cost)
                     {
@@ -530,7 +561,7 @@ public class CustomizeManager : MonoBehaviour
                 }
                 else
                 {
-                    _buyText.text = "BUY";
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                     _processButtons[1].interactable = true;
                 }
@@ -566,7 +597,7 @@ public class CustomizeManager : MonoBehaviour
                     _skinText.text = _itemData[_skinIndex + 6].itemName;
                     if (!_itemData[_skinIndex + 6].buyState)
                     {
-                        _buyText.text = _itemData[_skinIndex + 6].cost + "- BUY";
+                        _languageTexts[5].text = _itemData[_skinIndex + 6].cost + " - " + _buyText;
                         _processButtons[1].interactable = false;
                         if (_saveLoad.LoadInteger("Gem") < _itemData[_skinIndex + 6].cost)
                         {
@@ -579,7 +610,7 @@ public class CustomizeManager : MonoBehaviour
                     }
                     else
                     {
-                        _buyText.text = "BUY";
+                        _languageTexts[5].text = _buyText;
                         _processButtons[0].interactable = false;
                         _processButtons[1].interactable = true;
                     }
@@ -590,8 +621,8 @@ public class CustomizeManager : MonoBehaviour
                     mats[0] = _defaultMaterial;
                     _skinnedMeshRenderer.materials = mats;
                     _materialButtons[0].interactable = false;
-                    _skinText.text = "None Skin";
-                    _buyText.text = "BUY";
+                    _skinText.text = _itemText;
+                    _languageTexts[5].text = _buyText;
                     _processButtons[0].interactable = false;
                 }
             }
@@ -602,7 +633,7 @@ public class CustomizeManager : MonoBehaviour
                 _skinnedMeshRenderer.materials = mats;
 
                 _materialButtons[0].interactable = false;
-                _skinText.text = "None Skin";
+                _skinText.text = _itemText;
             }
 
             if (_skinIndex != _materials.Length - 1)
@@ -649,7 +680,7 @@ public class CustomizeManager : MonoBehaviour
     {
         _itemData[index].buyState = true;
         _saveLoad.SaveInteger("Gem", _saveLoad.LoadInteger("Gem") - _itemData[index].cost);
-        _buyText.text = "BUY";
+        _languageTexts[5].text = _buyText;
         _processButtons[0].interactable = false;
         _processButtons[1].interactable = true;
         _gemText.text = _saveLoad.LoadInteger("Gem").ToString();

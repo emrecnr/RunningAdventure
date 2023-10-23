@@ -1,6 +1,7 @@
 using MyLibrary;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,8 +15,24 @@ public class SettingsManager : MonoBehaviour
 
     SaveLoad _saveLoad = new SaveLoad();
 
+    DataController _dataController = new DataController();
+
+    public List<LanguageData> languageDatas = new List<LanguageData>();
+    private List<LanguageData> _readedData = new List<LanguageData>();
+    public TextMeshProUGUI[] _languageTexts;
+    [Header("Language Chose")]
+    public TextMeshProUGUI _languageText;
+    public Button[] _languageButtons;
+    private int _activeIndex = 0;
+
     private void Start()
     {
+        _dataController.LanguageLoad();
+        _readedData = _dataController.LanguageTransaction();
+        languageDatas.Add(_readedData[4]);
+        LanguagePreference();
+        CheckLanguageState();
+
         _buttonMusic.volume = _saveLoad.LoadFloat("MenuFX");
 
 
@@ -23,7 +40,23 @@ public class SettingsManager : MonoBehaviour
         _menuFx.value = _saveLoad.LoadFloat("MenuFX");
         _gameMusic.value = _saveLoad.LoadFloat("GameMusic");
     }
-
+    private void LanguagePreference()
+    {
+        if (_saveLoad.LoadString("Language") == "TR")
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageTR[i].Text;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageENG[i].Text;
+            }
+        }
+    }
 
 
 
@@ -59,8 +92,44 @@ public class SettingsManager : MonoBehaviour
         _buttonMusic.Play();
         SceneManager.LoadScene(0);
     }
-    public void ChangeLanguange()
+    private void CheckLanguageState()
     {
+        if (_saveLoad.LoadString("Language") == "TR")
+        {
+            _activeIndex = 0;
+            _languageText.text = "TÜRKÇE";
+            _languageButtons[0].gameObject.SetActive(false);
+        }
+        else
+        {
+            _activeIndex = 1;
+            _languageText.text = "ENGLISH";
+            _languageButtons[1].gameObject.SetActive(false);
+            
+        }
+    }
+    public void ChangeLanguange(string value)
+    {
+        switch (value)
+        {
+            case "Right":
+                _activeIndex = 1;
+                _languageText.text = "ENGLISH";
+                _languageButtons[1].gameObject.SetActive(false);
+                _languageButtons[0].gameObject.SetActive(true);
+                _saveLoad.SaveString("Language", "ENG");
+                LanguagePreference();
+                break;
+
+            case "Left":
+                _activeIndex = 0;
+                _languageText.text = "TÜRKÇE";
+                _languageButtons[0].gameObject.SetActive(false);
+                _languageButtons[1].gameObject.SetActive(true);
+                _saveLoad.SaveString("Language", "TR");
+                LanguagePreference();
+                break;
+        }
         _buttonMusic.Play();
     }
 }

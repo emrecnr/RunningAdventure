@@ -280,6 +280,7 @@ namespace MyLibrary
                 PlayerPrefs.SetFloat("MenuMusic", 1);
                 PlayerPrefs.SetFloat("MenuFX", 1);
                 PlayerPrefs.SetFloat("GameMusic", 1);
+                PlayerPrefs.SetString("Language", "ENG");
             }
 
         }
@@ -329,13 +330,20 @@ namespace MyLibrary
                 Debug.LogError("Not Found Data");
             }
         }
-        public void FirsTimeSave(List<ItemData> _itemData)
+        public void FirsTimeSave(List<ItemData> _itemData, List<LanguageData> _languageData)
         {
             if (!File.Exists(Application.persistentDataPath + "/ItemData.gd"))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 FileStream file = File.Create(Application.persistentDataPath + "/ItemData.gd");
                 bf.Serialize(file, _itemData);
+                file.Close();
+            }
+            if (!File.Exists(Application.persistentDataPath + "/LanguageData.gd"))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Create(Application.persistentDataPath + "/LanguageData.gd");
+                bf.Serialize(file, _languageData);
                 file.Close();
             }
         }
@@ -345,8 +353,47 @@ namespace MyLibrary
             return _itemDList;
 
         }
+
+
+        List<LanguageData> _languageDataIn;
+        public void LanguageLoad()
+        {
+            if (File.Exists(Application.persistentDataPath + "/LanguageData.gd"))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                FileStream file = File.Open(Application.persistentDataPath + "/LanguageData.gd", FileMode.Open);
+                _languageDataIn = (List<LanguageData>)bf.Deserialize(file);
+                file.Close();
+
+            }
+            else
+            {
+                Debug.LogError("Not Found Data");
+            }
+        }
+
+        public List<LanguageData> LanguageTransaction()
+        {
+            return _languageDataIn;
+        }
     }
 
+
+    //////
+    [Serializable]
+    public class LanguageData
+    {
+        public int index;
+        public List<Language_TR> _languageTR = new List<Language_TR>();
+        public List<Language_TR> _languageENG = new List<Language_TR>();
+    }
+
+    [Serializable]
+    public class Language_TR
+    {
+        public string Text;
+    }
+  
 }
 
 

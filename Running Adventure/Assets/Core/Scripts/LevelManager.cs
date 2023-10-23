@@ -15,8 +15,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Sprite _lockSprite;
     [SerializeField] private AudioSource _audio;
     int level;
+    DataController _dataController = new DataController();
+    public List<LanguageData> languageDatas = new List<LanguageData>();
+    private List<LanguageData> _readedData = new List<LanguageData>();
+    public TextMeshProUGUI[] _languageTexts;
     private void Start()
     {
+        _dataController.LanguageLoad();
+        _readedData = _dataController.LanguageTransaction();
+        languageDatas.Add(_readedData[2]);
+        LanguagePreference();
         _audio.volume = _saveLoad.LoadFloat("MenuFX");
 
         int currentLevel = _saveLoad.LoadInteger("LastLevel") - 4; // ilk level sahne indexi 5 oldugu icin
@@ -35,6 +43,24 @@ public class LevelManager : MonoBehaviour
                 _levelButtons[i].enabled = false; // soluklastirma olmamasi icin
             }
             index++;
+        }
+
+    }
+    private void LanguagePreference()
+    {
+        if (_saveLoad.LoadString("Language") == "TR")
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageTR[0].Text;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _languageTexts.Length; i++)
+            {
+                _languageTexts[i].text = languageDatas[0]._languageENG[0].Text;
+            }
         }
     }
     public void LoadScene(int index)
