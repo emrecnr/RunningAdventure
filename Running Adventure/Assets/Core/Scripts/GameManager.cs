@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -52,6 +53,10 @@ public class GameManager : MonoBehaviour
     public List<LanguageData> languageDatas = new List<LanguageData>();
     private List<LanguageData> _readedData = new List<LanguageData>();
     public TextMeshProUGUI[] _languageTexts;
+
+    [Header("-----LOADING DATA-----")]
+    [SerializeField] private GameObject _loadingPanel;
+    [SerializeField] private Slider _loadingSlider;
     private void Awake()
     {
         _audios[0].volume = _saveLoad.LoadFloat("GameMusic");
@@ -140,6 +145,7 @@ public class GameManager : MonoBehaviour
                 if (_currentCharacterCount < howManyEnemy || _currentCharacterCount == howManyEnemy)
                 {
                     Debug.Log("Game Over");
+                    _panels[3].SetActive(true);
                 }
                 else
                 {
@@ -160,7 +166,7 @@ public class GameManager : MonoBehaviour
                             _saveLoad.SaveInteger("LastLevel", _saveLoad.LoadInteger("LastLevel" + 1));
                         }
                     }
-
+                    _panels[2].SetActive(true);
                     Debug.Log("You Win");
 
                 }
@@ -194,7 +200,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
     public void DestroyEffectCreate(Vector3 _position, bool hammer = false, bool state = false)
     {
         foreach (var effect in destroyEffects)
@@ -238,7 +243,6 @@ public class GameManager : MonoBehaviour
             BattleState();
         }
     }
-
     public void CheckItem()
     {
         if (_saveLoad.LoadInteger("ActiveCap") != -1)
@@ -265,7 +269,6 @@ public class GameManager : MonoBehaviour
 
 
     }
-
     public void QuitButton(string state)
     {
         _audios[1].Play();
@@ -290,7 +293,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
         }
     }
-
     public void Settings(string state)
     {
         if (state == "Settings")
@@ -310,6 +312,24 @@ public class GameManager : MonoBehaviour
         _audios[0].volume = _gameMusicSlider.value;
         
     }
-        
+    public void NextLevel()
+    {        
+        StartCoroutine(LoadAsync(_scene.buildIndex + 1));
+    }
+    IEnumerator LoadAsync(int sceneIndex)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+
+        _loadingPanel.SetActive(true);
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress / .9f);
+            _loadingSlider.value = progress;
+            yield return null;
+        }
+
+
+    }
+
 }
 

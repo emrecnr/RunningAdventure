@@ -10,15 +10,21 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
+    DataController _dataController = new DataController();
     SaveLoad _saveLoad = new SaveLoad();
+
     [SerializeField] Button[] _levelButtons;
     [SerializeField] private Sprite _lockSprite;
     [SerializeField] private AudioSource _audio;
     int level;
-    DataController _dataController = new DataController();
+    [Header("---LANGUAGE DATA---")]
     public List<LanguageData> languageDatas = new List<LanguageData>();
     private List<LanguageData> _readedData = new List<LanguageData>();
     public TextMeshProUGUI[] _languageTexts;
+
+    [Header("---LOADING DATA---")]
+    [SerializeField] private GameObject _loadingPanel;
+    [SerializeField] private Slider _loadingSlider;
     private void Start()
     {
         _dataController.LanguageLoad();
@@ -66,9 +72,23 @@ public class LevelManager : MonoBehaviour
     public void LoadScene(int index)
     {
         _audio.Play();
-        SceneManager.LoadScene(index);
+       
+        StartCoroutine(LoadAsync(index));
     }
+    IEnumerator LoadAsync(int sceneIndex)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
 
+        _loadingPanel.SetActive(true);
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress / .9f);
+            _loadingSlider.value = progress;
+            yield return null;
+        }
+
+
+    }
     public void Back()
     {
         _audio.Play();

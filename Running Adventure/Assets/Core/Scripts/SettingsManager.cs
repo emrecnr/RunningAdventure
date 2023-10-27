@@ -8,22 +8,27 @@ using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
 {
+    SaveLoad _saveLoad = new SaveLoad();
+
+    DataController _dataController = new DataController();
+
+    [Header("---AUDIO---")]
     [SerializeField] private AudioSource _buttonMusic;
     [SerializeField] private Slider _menuMusic;
     [SerializeField] private Slider _menuFx;
     [SerializeField] private Slider _gameMusic;
 
-    SaveLoad _saveLoad = new SaveLoad();
-
-    DataController _dataController = new DataController();
-
+    [Header("---LANGUAGE DATA---")]
     public List<LanguageData> languageDatas = new List<LanguageData>();
     private List<LanguageData> _readedData = new List<LanguageData>();
     public TextMeshProUGUI[] _languageTexts;
+
     [Header("Language Chose")]
     public TextMeshProUGUI _languageText;
     public Button[] _languageButtons;
+#pragma warning disable IDE0052 // Okunmamýþ özel üyeleri kaldýr
     private int _activeIndex = 0;
+#pragma warning restore IDE0052 // Okunmamýþ özel üyeleri kaldýr
 
     private void Start()
     {
@@ -57,16 +62,6 @@ public class SettingsManager : MonoBehaviour
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
     public void VolumeSetting(string which)
     {
         switch (which)
@@ -84,9 +79,6 @@ public class SettingsManager : MonoBehaviour
 
         }
     }
-
-
-
     public void BackToMenu()
     {
         _buttonMusic.Play();

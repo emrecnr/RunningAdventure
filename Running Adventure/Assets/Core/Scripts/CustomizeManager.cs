@@ -59,7 +59,7 @@ public class CustomizeManager : MonoBehaviour
 
     private void Start()
     {
-        // _saveLoad.SaveInteger("Gem", 6500);
+         _saveLoad.SaveInteger("Gem", 6500);
         _gemText.text = _saveLoad.LoadInteger("Gem").ToString();
 
 
